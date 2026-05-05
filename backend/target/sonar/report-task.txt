@@ -1,0 +1,6 @@
+projectKey=Unitime-Maintenance-Project
+serverUrl=http://localhost:9000
+serverVersion=26.4.0.121862
+dashboardUrl=http://localhost:9000/dashboard?id=Unitime-Maintenance-Project
+ceTaskId=3f9317f9-dcfa-44ec-9297-330fe0178fc6
+ceTaskUrl=http://localhost:9000/api/ce/task?id=3f9317f9-dcfa-44ec-9297-330fe0178fc6
