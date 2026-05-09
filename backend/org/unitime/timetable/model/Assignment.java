@@ -285,16 +285,46 @@ public class Assignment extends BaseAssignment implements ClassAssignmentProxy.A
 					room.getLabel(),
 					(room instanceof Room? ((Room)room).getBuilding().getUniqueId() : null),
 					0,
-					room.getCapacity().intValue(),
+					room.getCapacity() == null ? 0 : room.getCapacity().intValue(),
 					room.getCoordinateX(),
 					room.getCoordinateY(),
-					room.isIgnoreTooFar().booleanValue(),
+					room.isIgnoreTooFar() == null ? false : room.isIgnoreTooFar().booleanValue(),
 					null);
 			ret.addElement(roomLocation);
 		}
 		return ret;
 	}
-	
+	// UM-2: Returns total capacity of all assigned rooms
+	@Transient
+	public int getTotalRoomCapacity() {
+		int total = 0;
+		Set<Location> rooms = getRooms();
+		if (rooms == null) return 0;
+		for (Location room : rooms) {
+			if (room != null && room.getCapacity() != null)
+				total += room.getCapacity();
+		}
+		return total;
+	}
+
+	// UM-2: Validates enrolled students fit in assigned rooms
+	@Transient
+	public void validateRoomCapacity(int enrollment) {
+		int capacity = getTotalRoomCapacity();
+		if (enrollment > capacity) {
+			throw new RoomCapacityException(
+					"Room capacity exceeded for class '" + getClassName() +
+							"': " + enrollment + " enrolled but only " +
+							capacity + " seats available."
+			);
+		}
+	}
+
+	// UM-2: Custom exception
+	public static class RoomCapacityException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+		public RoomCapacityException(String message) { super(message); }
+	}
 	private transient Placement iPlacement = null;
 	@Transient
 	public Placement getPlacement() {
