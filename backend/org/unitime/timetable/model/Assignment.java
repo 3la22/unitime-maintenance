@@ -307,6 +307,7 @@ public class Assignment extends BaseAssignment implements ClassAssignmentProxy.A
 		return total;
 	}
 
+
 	// UM-2: Validates enrolled students fit in assigned rooms
 	@Transient
 	public void validateRoomCapacity(int enrollment) {
